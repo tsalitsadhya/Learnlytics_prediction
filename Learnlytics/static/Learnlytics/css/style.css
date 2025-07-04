@@ -1,0 +1,306 @@
+/* RESET */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    line-height: 1.6;
+    color: #333;
+    padding-top: 70px;
+    background-color: #fafafa;
+    height: 100%;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+/* CONTAINER */
+.container {
+    width: 85%;
+    margin: 0 auto;
+}
+
+/* HEADER */
+header {
+    background: #fff;
+    padding: 1rem 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border-bottom: 1px solid #eee;
+}
+
+header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header .logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #5a2c8d;
+}
+
+header nav ul {
+    display: flex;
+    list-style: none;
+}
+
+header nav ul li {
+    margin-left: 20px;
+}
+
+header nav ul li a:hover {
+  color: #5a2c8d;
+}
+
+
+header nav ul li a {
+    text-decoration: none;
+    font-weight: bold;
+    color: #333;
+    transition: color 0.2s ease;
+}
+
+/* BUTTONS */
+.btn-primary,
+.btn-secondary {
+    display: inline-block;
+    padding: 10px 20px;
+    text-decoration: none;
+    color: #fff;
+    border-radius: 5px;
+    transition: background 0.3s ease;
+}
+
+.btn-primary {
+    background-color: #5a2c8d;
+}
+
+.btn-secondary {
+    background-color: #5e2ca5;
+    margin-top: 20px;
+}
+
+.btn-secondary:hover {
+    background-color: #4b1d85;
+}
+
+/* SECTION: HERO */
+#hero {
+    background: linear-gradient(135deg, #ede7f6, #f3e5f5);
+    padding: 100px 0;
+    text-align: center;
+    position: relative;
+}
+
+#hero h1 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+}
+
+#hero p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+}
+
+.hero-graph {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 50%;
+    height: 100%;
+    background: url('path/to/your/graph-image.png') no-repeat center bottom;
+    background-size: cover;
+    opacity: 0.3;
+    z-index: 1;
+}
+
+#hero .container {
+    position: relative;
+    z-index: 2;
+}
+
+/* SECTION: LAYANAN */
+#layanan {
+    background: #f9f9f9;
+    padding: 60px 0;
+    text-align: center;
+}
+
+#layanan h2 {
+    font-size: 2.5rem;
+    margin-bottom: 40px;
+    color: #444;
+}
+
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+}
+
+.service-item {
+    background: #fff;
+    padding: 30px;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease;
+}
+
+.service-item:hover {
+    transform: translateY(-5px);
+}
+
+.service-icon {
+    width: 70px;
+    height: 70px;
+    margin: 0 auto 20px;
+    background-color: #5a2c8d;
+    border-radius: 50%;
+}
+
+/* SECTION: TENTANG */
+#tentang {
+    background: #fff3e0;
+    padding: 60px 0;
+}
+
+#tentang .container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    align-items: flex-start;
+}
+
+.about-content {
+    flex: 1 1 500px;
+}
+
+.about-content h2 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    color: #8e44ad;
+}
+
+.about-content p {
+    margin-bottom: 15px;
+    font-size: 1.05rem;
+    color: #444;
+}
+
+.about-graph {
+    flex: 1 1 400px;
+    height: auto;
+}
+
+/* SECTION: DASHBOARD */
+#dashboard {
+    background-color: #e3f2fd;
+    padding: 60px 20px;
+    text-align: center;
+    min-height: 100vh;
+}
+
+#dashboard h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #1565c0;
+}
+
+#dashboard p {
+    font-size: 1rem;
+    margin-bottom: 20px;
+}
+
+#dashboard canvas {
+    max-width: 100%;
+    height: auto;
+}
+
+/* FOOTER */
+footer {
+    background-color:  #5e2ca5;
+    color: #fff;
+    text-align: center;
+    padding: 20px 0;
+    font-size: 0.9rem;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    header .container {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .team-member {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    #tentang .container {
+        flex-direction: column;
+    }
+}
+
+/* Reset default link style for service-item */
+a.service-item {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+/* Pastikan juga elemen di dalamnya tidak punya gaya link */
+a.service-item h3,
+a.service-item p {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Styling umum untuk service-item card */
+.service-item {
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    text-align: center;
+}
+
+/* Icon bulat di atas card */
+.service-icon {
+    width: 80px;
+    height: 80px;
+    background-color: #5e2b97; /* purple */
+    border-radius: 50%;
+    margin: 0 auto 15px auto;
+}
+
+/* Hover effect biar terasa interaktif */
+.service-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+}
+
+/* Typography */
+.service-item h3 {
+    font-size: 1.25rem;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.service-item p {
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #333;
+}

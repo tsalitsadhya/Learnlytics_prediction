@@ -1,0 +1,338 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Course Prediction</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+<style>
+    /* General Styles */
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f4f6f8;
+        margin: 0;
+        padding: 0;
+        color: #333;
+        padding-top: 80px; /* Add padding to push content below the fixed header */
+    }
+
+    header {
+        background: #fff;
+        padding: 1rem 0;
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 1000;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        border-bottom: 1px solid #eee;
+    }
+
+    header .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 2rem;
+    }
+
+    header .logo {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #5a2c8d;
+    }
+
+    header nav ul {
+        list-style: none;
+        display: flex;
+        padding-left: 0;
+    }
+
+    header nav ul li {
+        margin-left: 20px;
+    }
+
+    header nav ul li a {
+        text-decoration: none;
+        font-weight: bold;
+        color: #333;
+        transition: color 0.2s ease;
+    }
+
+    header nav ul li a:hover {
+        color: #5a2c8d;
+    }
+
+    .container {
+        width: 85%;
+        margin: 0 auto;
+        padding-top: 50px; /* Adjust for fixed header */
+    }
+
+    h1 {
+        text-align: center;
+        color: #5a2c8d;
+        margin-top: 30px;
+    }
+
+    p {
+        max-width: 800px;
+        margin: 20px auto;
+        line-height: 1.6;
+        text-align: center;
+    }
+
+    /* Form Styles */
+    form {
+        max-width: 600px;
+        margin: 30px auto;
+        background-color: #ffffff;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    form button {
+        background-color: #5a2c8d;
+        color: #fff;
+        border: none;
+        padding: 10px 25px;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 5px;
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    form button:hover {
+        background-color: #4e1f6e;
+    }
+
+    .form-control {
+        display: block;
+        width: 100%;
+        padding: 10px 14px;
+        font-size: 16px;
+        line-height: 1.5;
+        color: #495057;
+        background-color: #ffffff;
+        background-clip: padding-box;
+        border: 1px solid #ced4da;
+        border-radius: 6px;
+        margin-bottom: 20px;
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+
+    .form-control:focus {
+        border-color: #5a2c8d;
+        box-shadow: 0 0 0 0.2rem rgba(90, 44, 141, 0.25);
+    }
+
+    .section {
+        max-width: 900px;
+        margin: 40px auto;
+        background-color: #ffffff;
+        padding: 25px;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .section h2, .section h3 {
+        color: #2c3e50;
+        text-align: center;
+    }
+
+    .predictions {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+        margin-top: 20px;
+    }
+
+    .course-card {
+        background-color: #ecf0f1;
+        padding: 20px;
+        border-radius: 10px;
+        flex: 1 1 250px;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .course-card h3 {
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    .progress-container {
+        background-color: #dfe6e9;
+        border-radius: 8px;
+        overflow: hidden;
+        height: 20px;
+        margin: 10px 0;
+    }
+
+    .progress-bar {
+        height: 100%;
+        background-color: #213448;
+        transition: width 0.6s ease;
+    }
+
+    #gender-distribution-chart {
+        margin-top: 30px;
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+        .predictions {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        form {
+            padding: 20px;
+        }
+
+        .section {
+            padding: 20px;
+        }
+    }
+
+    /* Scrollable Container for Form */
+    .scroll-container {
+        max-height: 400px;
+        overflow-y: auto;
+    }
+
+</style>
+
+
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">Learnlytics</div>
+            <nav>
+                <ul>
+                    <li><a href="{% url 'home' %}">About</a></li>
+                    <li><a href="{% url 'home' %}#layanan">Services</a></li>
+                    <li><a href="{% url 'home' %}#dashboard">Analytics</a></li>
+                    <li><a href="{% url 'about' %}">Our Team</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+
+    <h1>Course Predictions System</h1>
+    <p>A course recommendation system aims to suggest the most suitable next courses for each student based on their past academic performance, interests demonstrated through activities, and potential for future success. These recommendations help students create a strategic and well-directed study plan, making their learning experience more effective and aligned with their personal and professional goals.</p>
+
+    <!-- Form input -->
+    <form method="POST">
+    {% csrf_token %}
+    <label>{{ form.interes_name_1.label_tag }}</label>
+    {{ form.interes_name_1 }}
+
+    <label>{{ form.interes_name_2.label_tag }}</label>
+    {{ form.interes_name_2 }}
+
+    <label>{{ form.last_course_1.label_tag }}</label>
+    {{ form.last_course_1 }}
+
+    <label>{{ form.score_last_course_1.label_tag }}</label>
+    {{ form.score_last_course_1 }}
+
+    <label>{{ form.last_course_2.label_tag }}</label>
+    {{ form.last_course_2 }}
+
+    <label>{{ form.score_last_course_2.label_tag }}</label>
+    {{ form.score_last_course_2 }}
+
+    <label>{{ form.gender.label_tag }}</label>
+    {{ form.gender }}
+
+    <div style="text-align: center; margin-top: 20px;">
+        <button type="submit">Submit</button>
+    </div>
+</form>
+
+
+    <!-- Display prediction result -->
+    {% if top_3_courses_with_progress %}
+
+         <div class="section">
+            <h3>Recommendation</h3>
+            <p>
+                You are a good fit for <strong>{{ top_3_course_details.0.name }}</strong> 
+                with a match of {{ top_3_course_details.0.progress|floatformat:1 }}%. 
+                Your performance in your recent courses (Score: {{ score_last_course_1 }} and {{ score_last_course_2 }}) 
+                aligns well with this recommendation. This <strong>{{ top_3_course_details.0.name }}</strong> to </strong> {{ top_3_course_details.0.description }}</strong>
+            </p>
+        </div>
+
+        <div class="section">
+            <h2>Top 3 Predicted Courses for You</h2>
+            <div class="predictions">
+                {% for course, progress in top_3_courses_with_progress %}
+                <div class="course-card">
+                    <h3>{{ course }}</h3>
+                    <div class="progress-container">
+                        <div class="progress-bar" style="width: {{ progress }}%;"></div>
+                    </div>
+                    <p style="text-align: center;">{{ progress|floatformat:1 }}% Match</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+
+        <div class="section">
+            <h3>Gender Distribution by Course</h3>
+            <div id="gender-distribution-chart"></div>
+        </div>
+
+        <!-- Plotly script -->
+        <script>
+            // Plotly Chart: Gender Distribution by Course
+            const courses = {{ top_3_courses|safe }};
+            const genderValues = {{ gender_values|safe }};
+            const traces = [];
+
+            courses.forEach((course, index) => {
+                // Male
+                traces.push({
+                    x: [course],
+                    y: [genderValues[course][0]],
+                    name: 'Male',
+                    type: 'bar',
+                    marker: { color: '#8ACCD5' },
+                    legendgroup: 'Male',
+                    showlegend: index === 0
+                });
+
+                // Female
+                traces.push({
+                    x: [course],
+                    y: [genderValues[course][1]],
+                    name: 'Female',
+                    type: 'bar',
+                    marker: { color: '#E6A4B4' },
+                    legendgroup: 'Female',
+                    showlegend: index === 0
+                });
+            });
+
+            const layout = {
+                barmode: 'stack',
+                xaxis: { title: 'Course' },
+                yaxis: { title: 'Number of Students' },
+                margin: { t: 50, b: 50 },
+                legend: {
+                    orientation: 'h',
+                    y: -0.2
+                }
+            };
+
+            Plotly.newPlot('gender-distribution-chart', traces, layout, { responsive: true });
+        </script>
+    {% endif %}
+
+</body>
+</html>

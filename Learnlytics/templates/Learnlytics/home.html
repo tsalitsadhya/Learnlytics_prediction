@@ -1,0 +1,152 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learnlytics - Data Science Project</title>
+    <link rel="stylesheet" href="{% static 'Learnlytics/css/style.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/boxicons@2.0.7/css/boxicons.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="container">
+            <div class="logo">Learnlytics</div>
+            <nav>
+                <ul>
+                    <li><a href="{% url 'home' %}">About</a></li>
+                    <li><a href="{% url 'home' %}#layanan">Services</a></li>
+                    <li><a href="{% url 'home' %}#dashboard">Analytics</a></li>
+                    <li><a href="{% url 'about' %}">Our Team</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="hero">
+        <div class="container">
+            <h1>Learnlytics</h1>
+            <p>Learnlytics is a data-driven predictive platform designed to help students improve learning outcomes through intelligent and personalized academic analytics.</p>
+            <a href="#layanan" class="btn-secondary">More</a>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="layanan">
+        <div class="container">
+            <h2>Services</h2>
+            <div class="services-grid">
+                <a href="{% url 'dashboard' %}" class="service-item">
+                    <div class="service-icon">
+                        <i class="fa fa-cogs"></i>
+                    </div>
+                    <h3>Learning Style Analysis</h3>
+                    <p>This system groups students based on their learning patterns into three types: Intensive, Relaxed, and Passive.</p>
+                </a>
+                <a href="{% url 'course' %}" class="service-item">
+                    <div class="service-icon">
+                        <i class="fa fa-cogs"></i>
+                    </div>
+                    <h3>Course Predictions</h3>
+                    <p>Suggests the most suitable next courses based on performance, interests, and potential for success, aiding students in making strategic study plans.</p>
+                </a>
+                <a href="{% url 'find_partner' %}" class="service-item">
+                    <div class="service-icon">
+                        <i class="fa fa-cogs"></i>
+                    </div>
+                    <h3>Study Partner Recommendation</h3>
+                    <p>Discover your ideal study partners by exploring patterns in learning activities.</p>
+                </a>
+                <a href="{% url 'predict_grade' %}" class="service-item">
+                    <div class="service-icon">
+                        <i class="fa fa-users"></i>
+                    </div>
+                    <h3>Student Grade Prediction</h3>
+                    <p>A system or model to predict the future grades of students based on their activity</p>
+                </a>
+                <a href="{% url 'predict_graduation' %}" class="service-item">
+                    <div class="service-icon">
+                        <i class="fa fa-graduation-cap"></i>
+                    </div>
+                    <h3>Student Graduation Predictions</h3>
+                    <p>This system uses prediction models to calculate whether a student will pass or fail a specific course, based on their activity logs such as activity duration and frequency.</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dashboard Section -->
+    <section id="dashboard">
+        <div class="container">
+            <h2>Realtime Prediction Dashboard</h2>
+            <p>This chart shows predicted academic performance outcomes based on current student grade point average data.</p>
+            <canvas id="predictionChart" width="400" height="200"></canvas>
+        </div>
+    </section>
+
+    <script>
+        const courseNames = {{ course_names|safe }};
+        const avgGrades = {{ avg_grades|safe }};
+
+        function getRandomColor() {
+            const letters = '0123456789ABCDEF';
+            let color = '#';
+            for (let i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+
+        const barColors = courseNames.map(() => getRandomColor());
+
+        const ctx = document.getElementById('predictionChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: courseNames,
+                datasets: [{
+                    label: 'Average Grade by Course',
+                    data: avgGrades,
+                    backgroundColor: barColors,
+                    borderRadius: 5
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        title: {
+                            display: true,
+                            text: 'Grade'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Course'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                }
+            }
+        });
+    </script>
+
+    <!-- Footer Section -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Learnlytics. Data Science.</p>
+        </div>
+    </footer>
+</body>
+</html>

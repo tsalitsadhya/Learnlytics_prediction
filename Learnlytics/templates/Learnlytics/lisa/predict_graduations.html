@@ -1,0 +1,315 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Student Graduation Prediction</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+ /* General Styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f6f8;
+    margin: 0;
+    padding: 0;
+    color: #333;
+    padding-top: 100px; /* Untuk konten agar tidak ketutupan header */
+}
+
+header {
+    background: #fff;  /* White background for the header */
+    padding: 1rem 3rem; /* Add padding to make the header spacious */
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid #eee;
+    text-align: center; /* Center align the logo and navigation */
+}
+
+header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+header .logo {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #5a2c8d;
+    user-select: none;
+    letter-spacing: 1px; /* Space out letters to give a more modern look */
+}
+
+header nav ul {
+    list-style: none;
+    display: flex;
+    padding-left: 0;
+    margin: 0;
+}
+
+header nav ul li {
+    margin-left: 35px;  /* Increase spacing between menu items */
+}
+
+header nav ul li:first-child {
+    margin-left: 0;
+}
+
+header nav ul li a {
+    text-decoration: none;
+    font-weight: 600;
+    color: #33475b;
+    font-size: 1.1rem; /* Increase font size for better visibility */
+    transition: color 0.3s ease, border-bottom-color 0.3s ease;
+    padding: 6px 0;
+    border-bottom: 2px solid transparent;
+}
+
+header nav ul li a:hover,
+header nav ul li a:focus {
+    color: #5a2c8d;
+    border-bottom-color: #5a2c8d;
+    outline: none;
+}
+
+/* Add responsive layout */
+@media (max-width: 768px) {
+    header .container {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    header nav ul {
+        flex-direction: column;
+        padding: 0;
+    }
+
+    header nav ul li {
+        margin: 10px 0;
+    }
+}
+
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.page-title {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.page-title h1 {
+    font-size: 2rem;
+    color: #5a2c8d;
+    margin: 0 0 10px;
+}
+
+.page-title p {
+    font-size: 1.1rem;
+    color: #555;
+    margin: 0;
+}
+
+.form-section {
+    margin-bottom: 30px;
+}
+
+.form-section label {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.form-section select,
+.form-section button {
+    padding: 10px;
+    font-size: 1em;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.form-section button {
+    background-color: #28a745;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.form-section button:hover {
+    background-color: #218838;
+}
+
+.description {
+    background-color: #e9f7ef;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 30px;
+    font-size: 1.1em;
+}
+
+.result {
+    padding: 15px;
+    margin-top: 20px;
+    border-radius: 8px;
+    font-size: 1.2em;
+}
+
+.passed {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.failed {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.warning {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.chart-container {
+    margin-top: 30px;
+}
+
+footer {
+    text-align: center;
+    margin-top: 40px;
+    padding: 20px;
+    background-color: #343a40;
+    color: white;
+}
+
+
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">Learnlytics</div>
+            <nav>
+                <ul>
+                    <li><a href="{% url 'home' %}">About</a></li>
+                    <li><a href="{% url 'home' %}#layanan">Services</a></li>
+                    <li><a href="{% url 'home' %}#dashboard">Analytics</a></li>
+                    <li><a href="{% url 'about' %}">Our Team</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="page-title">
+            <h1>Student Graduation Prediction</h1>
+            <p>Use this system to predict a student's graduation status based on their activity in each course.</p>
+        </div>
+
+        <div class="description">
+            <p><strong>Project Description:</strong> This system uses prediction models to calculate whether a student will pass or fail a specific course, based on their activity logs such as activity duration and frequency. Thus, this prediction can help monitor and provide early alerts for students who need special attention.</p>
+        </div>
+
+        <div class="form-section">
+            <h3>Select Student and Course for Prediction:</h3>
+            <form method="POST">
+                {% csrf_token %}
+                <div>
+                    <label for="stu_id">Select Student:</label>
+                    <select name="stu_id" id="stu_id" required>
+                        <option value="" disabled selected>-- Select Student --</option>
+                        {% for stu_id, name in students %}
+                            <option value="{{ stu_id }}" {% if request.POST.stu_id == stu_id|stringformat:"s" %}selected{% endif %}>{{ name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div style="margin-top:15px;">
+                    <label for="course_id">Select Course:</label>
+                    <select name="course_id" id="course_id" required>
+                        <option value="" disabled selected>-- Select Course --</option>
+                        {% for course_id, course_name in courses %}
+                            <option value="{{ course_id }}" {% if request.POST.course_id == course_id|stringformat:"s" %}selected{% endif %}>{{ course_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div style="margin-top:15px;">
+                    <button type="submit">Predict</button>
+                </div>
+            </form>
+        </div>
+
+        {% if error %}
+            <div class="result warning">
+                {{ error }}
+            </div>
+        {% endif %}
+
+        {% if prediction %}
+            <div class="result {% if prediction.status == 'Passed' %}passed{% elif prediction.status == 'Failed' %}failed{% else %}warning{% endif %}">
+                <h3>Prediction Result:</h3>
+                <p><strong>Status:</strong> {{ prediction.status }}</p>
+                <p><strong>Confidence:</strong> {{ prediction.confidence }}</p>
+            </div>
+
+            <div class="chart-container">
+                <canvas id="predictionChart" width="400" height="150"></canvas>
+            </div>
+
+            <script>
+                const ctx = document.getElementById('predictionChart').getContext('2d');
+                {% if prediction.status == "Passed" %}
+                const passedCount = 1;
+                const failedCount = 0;
+                {% elif prediction.status == "Failed" %}
+                const passedCount = 0;
+                const failedCount = 1;
+                {% else %}
+                const passedCount = 0;
+                const failedCount = 0;
+                {% endif %}
+
+                const chart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Passed', 'Failed'],
+                        datasets: [{
+                            label: 'Graduation Status',
+                            data: [passedCount, failedCount],
+                            backgroundColor: ['#28a745', '#f8d7da'],
+                            borderColor: ['#155724', '#721c24'],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: { beginAtZero: true, max: 1 }
+                        },
+                        plugins: {
+                            legend: { display: true, position: 'top' },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return context.label + ': ' + context.parsed.y;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            </script>
+        {% endif %}
+    </div>
+
+</body>
+</html>

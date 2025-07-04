@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Study Partner Recommendation</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <style>
+        /* Reset font and base */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f9fafd;
+            color: #333;
+            padding-bottom: 40px;
+            padding-top: 80px; /* space for fixed header */
+            margin: 0;
+        }
+
+        /* HEADER */
+        header {
+            background: #fff;
+            padding: 1rem 2rem;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            border-bottom: 1px solid #eee;
+        }
+
+        header .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header .logo {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #5a2c8d;
+            letter-spacing: 1.5px;
+            user-select: none;
+            cursor: default;
+        }
+
+        header nav ul {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        header nav ul li {
+            margin-left: 28px;
+        }
+
+        header nav ul li:first-child {
+            margin-left: 0;
+        }
+
+        header nav ul li a {
+            text-decoration: none;
+            font-weight: 600;
+            color: #33475b;
+            font-size: 1rem;
+            transition: color 0.25s ease, border-bottom-color 0.25s ease;
+            padding: 6px 0;
+            border-bottom: 2px solid transparent;
+            display: inline-block;
+        }
+
+        header nav ul li a:hover,
+        header nav ul li a:focus {
+            color: #5a2c8d;
+            border-bottom-color: #5a2c8d;
+            outline: none;
+        }
+
+        /* Headings */
+        h1, h2, h3, h4 {
+            color: #1a2935;
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        /* Paragraphs and lists */
+        p, ol {
+            font-size: 1.05rem;
+            line-height: 1.5;
+            color: #444;
+        }
+
+        ol {
+            margin-left: 1.5rem;
+        }
+
+        /* Form styles */
+        form {
+            background-color: #fff;
+            padding: 1.5rem 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            max-width: 100%;
+            margin-bottom: 2rem;
+        }
+
+        /* List group items */
+        .list-group-item {
+            font-size: 1.1rem;
+            border: none;
+            margin-bottom: 10px;
+            border-radius: 8px;
+        }
+
+        .list-group-item em {
+            color: #007bff;
+            font-style: normal;
+            font-weight: 600;
+            display: block;
+            margin-top: 0.25rem;
+        }
+
+        /* Primary button style */
+        .btn-primary {
+            background-color: #5a2c8d;
+            border-color: #5a2c8d;
+            font-weight: 600;
+            font-size: 1.1rem;
+            padding: 0.5rem 1.25rem;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+
+        .btn-primary:hover,
+        .btn-primary:focus {
+            background-color: #5a2c8d;
+            border-color: #283593;
+            box-shadow: 0 0 8px rgba(40, 53, 147, 0.6);
+        }
+
+        /* Container max width and margin */
+        .container {
+            max-width: 900px;
+            margin: auto;
+        }
+
+        /* Activity list container */
+        .activity-list {
+            background-color: #fff;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            max-height: 350px;
+            overflow-y: auto;
+        }
+
+        .activity-list ul {
+            padding-left: 1.25rem;
+            margin: 0;
+        }
+
+        .activity-list li {
+            font-size: 1.05rem;
+            margin-bottom: 0.4rem;
+            color: #2c3e50;
+        }
+
+        /* Responsive tweaks */
+        @media (max-width: 768px) {
+            header .container {
+                flex-direction: column;
+                gap: 10px;
+            }
+            header nav ul {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            header nav ul li {
+                margin-left: 15px;
+                margin-bottom: 8px;
+            }
+            .row {
+                flex-direction: column;
+            }
+            .col-md-6 {
+                max-width: 100%;
+                flex: 1 0 100%;
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">Learnlytics</div>
+            <nav>
+                <ul>
+                    <li><a href="{% url 'home' %}">About</a></li>
+                    <li><a href="{% url 'home' %}#layanan">Services</a></li>
+                    <li><a href="{% url 'home' %}#dashboard">Analytics</a></li>
+                    <li><a href="{% url 'about' %}">Our Team</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+
+        <!-- Introduction -->
+        <h1>Welcome to the Study Partner Recommendation System</h1>
+        <p>This website helps you find study partners based on your activities and grades using the association rules apriori algorithm.</p>
+        <h4>How to use:</h4>
+        <ol>
+            <li>Fill your name, activity name, and grade in the form below.</li>
+            <li>Click the <strong>Find Study Partner</strong> button.</li>
+            <li>View recommended study partners with similar activities and grades.</li>
+        </ol>
+
+        <hr/>
+
+        <!-- Form and Activity list side by side -->
+        <div class="row">
+            <div class="col-md-6">
+                <h2>Find Your Study Partner</h2>
+                <form method="post" class="mb-4">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        {{ form.name.label_tag }}
+                        {{ form.name }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.activity.label_tag }}
+                        {{ form.activity }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.grade.label_tag }}
+                        {{ form.grade }}
+                    </div>
+                    <button type="submit" class="btn btn-primary">Find Study Partner</button>
+                </form>
+            </div>
+
+            <div class="col-md-6">
+                <h4>Available Activities</h4>
+                <div class="activity-list">
+                    <ul>
+                        <li>Course 1 - Job</li>
+                        <li>Course 1 - Century</li>
+                        <li>Course 1 - Summer</li>
+                        <li>Course 2 - Ahead</li>
+                        <li>Course 2 - Group</li>
+                        <li>Course 2 - Charge</li>
+                        <li>Course 3 - Week</li>
+                        <li>Course 3 - Do</li>
+                        <li>Course 3 - Key</li>
+                        <li>Course 4 - Third</li>
+                        <li>Course 4 - Look</li>
+                        <li>Course 4 - Purpose</li>
+                        <li>Course 5 - Their</li>
+                        <li>Course 5 - Lead</li>
+                        <li>Course 5 - Need</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recommendation Results -->
+        {% if recommendations %}
+            <h3>Recommended Study Partners</h3>
+            <ul class="list-group mb-4">
+                {% for rec in recommendations %}
+                <li class="list-group-item" style="background-color: {% if forloop.first %}#cce4ff{% else %}#dbe9ff{% endif %};">
+                    <strong>{{ rec.student_name }}</strong> — 
+                    <strong>Match Score: </strong>{{ rec.similarity }}
+                    {% if rec.note %}
+                        <em>{{ rec.note }}</em>
+                    {% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No suitable study partners found.</p>
+        {% endif %}
+
+        <!-- Chart association rules -->
+        {% if chart_divs %}
+            <h3>Association Rules Chart</h3>
+            {% for chart in chart_divs %}
+                {{ chart|safe }}
+            {% endfor %}
+        {% endif %}
+    </div>
+</body>
+</html>

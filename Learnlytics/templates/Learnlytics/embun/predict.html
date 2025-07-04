@@ -1,0 +1,20 @@
+{% extends "Learnlytics/embun/base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Predict Student Learning Type</h2>
+    <form method="post" class="mt-3">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Predict</button>
+    </form>
+
+    {% if predicted_type %}
+    <div class="alert alert-info mt-4">
+        <strong>Predicted Learning Type:</strong> {{ predicted_type }}
+    </div>
+    {% endif %}
+    {% if silhouette_score %}
+    <p>Silhouette Score: {{ silhouette_score|floatformat:3 }}</p>
+    {% endif %}
+</div>
+{% endblock %}

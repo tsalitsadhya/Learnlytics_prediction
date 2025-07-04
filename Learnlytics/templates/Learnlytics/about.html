@@ -1,0 +1,92 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Data Science Project</title>
+    <link rel="stylesheet" href="{% static 'Learnlytics/css/about.css' %}" />
+    <link href="https://cdn.jsdelivr.net/npm/boxicons@2.0.7/css/boxicons.min.css" rel="stylesheet">
+
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">Learnlytics</div>
+            <nav>
+                <ul>
+                    <li><a href="{% url 'home' %}">About</a></li>
+                    <li><a href="{% url 'home' %}#layanan">Services</a></li>
+                    <li><a href="{% url 'home' %}#dashboard">Analytics</a></li>
+                    <li><a href="{% url 'about' %}">Our Team</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section id="tentang">
+        <div class="container">
+            <div class="about-content">
+                <h2>About Us</h2>
+                <p>
+                    This project is developed by a team of 5 Data Science Bootcamp participants. 
+                    We created a web-based application to visualize and test machine learning models.
+                </p>
+
+                
+
+                <div class="team-member">
+                    <img src="{% static 'Learnlytics/images/embun.jpg' %}" class="member-photo" />
+                    <div class="member-info">
+                        <h3>Embun Aqeela Zahra</h3>
+                        <p><strong>Use Case:</strong> Learning Style Analysis</p>
+                        <p><strong>Contribution:</strong> Developed a web-based analytics dashboard to classify student learning types using K-Means clustering, enabling the identification of "Intensive", "Relaxed", and "Passive" learners. The system includes dynamic visualizations such as distribution charts and activity heatmaps, along with a detailed student profile table showing learning metrics (average duration, session frequency, and night activity). It supports interactive filtering and provides actionable insights for learning behavior analysis.</p>
+                    </div>
+                </div>
+
+                <div class="team-member">
+                    <img src="{% static 'Learnlytics/images/kejo.jpg' %}" class="member-photo" />
+                    <div class="member-info">
+                        <h3>Kezia Joseph</h3>
+                        <p><strong>Use Case:</strong> Student Grade Prediction</p>
+                        <p><strong>Contribution:</strong> Developed a machine learning-based prediction system using Random Forest Regressor to estimate student grades from activity log features. The system is integrated into a Django web application, with automated model training via custom management commands and persistent model storage using joblib. Data is sourced from a structured ETL pipeline, and the output supports early identification of at-risk students. The model achieves measurable performance metrics (MAE and R²) and enables scalable academic insight generation for educators.</p>
+                    </div>
+                </div>
+
+                
+                <div class="team-member">
+                    <img src="{% static 'Learnlytics/images/shalwa.jpg' %}" class="member-photo" />
+                    <div class="member-info">
+                        <h3>Raffila Shalwa Sakina</h3>
+                        <p><strong>Use Case:</strong> Study Partner Recommendations</p>
+                        <p><strong>Contribution:</strong> Developed data processing and Apriori-based association rule mining using courses and grades to generate study partner recommendations. Integrated the engine into a Django app with a user-friendly form and real-time scoring. Created interactive visualizations of association rules and designed the UI through team collaboration.</p>
+                    </div>
+                </div>
+
+                <div class="team-member">
+                  <img src="{% static 'Learnlytics/images/riska.jpg' %}" class="member-photo" />
+                    <div class="member-info">
+                        <h3>Riska Atikah Rahmawati</h3>
+                        <p><strong>Use Case:</strong> Course Predictions</p>
+                        <p><strong>Contribution:</strong> Contributed to data collection, cleaning, and feature selection to build a course recommendation prediction model for students using Random Forest Classification. The model was integrated into a web application through a Django API to provide real-time recommendations, accompanied by interactive visualizations using Chart.js. Led the team in project development, managed the timeline, designed the user interface (UI) based on team discussions, and conducted regular model retraining to improve the accuracy and relevance of the predictions.</p>
+                    </div>
+                </div>
+
+
+                <div class="team-member">
+                    <img src="{% static 'Learnlytics/images/lisa.jpg' %}" class="member-photo" />
+                    <div class="member-info">
+                        <h3>Tsalitsatul Adhya</h3>
+                        <p><strong>Use Case:</strong> Student Graduation Predictions</p>
+                        <p><strong>Contribution:</strong> Developed a predictive model to estimate whether a student would pass or fail a specific course, based on behavioral data such as activity duration and frequency. The model enables early identification of students who may require intervention. Contributed to data preprocessing, handled system errors during development and deployment, and supported the team in improving system robustness.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Learnlytics. Data Science.</p>
+    </footer>
+</body>
+</html>

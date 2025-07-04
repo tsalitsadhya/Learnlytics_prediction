@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Grade Prediction</title>
+    <style>
+        /* General Body and Container Styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f9fafd;
+    color: #333;
+    padding-bottom: 40px;
+    padding-top: 80px; /* space for fixed header */
+    margin: 0;
+}
+
+/* HEADER */
+header {
+    background: #ffffff;
+    padding: 1rem 2rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    z-index: 1000;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    border-bottom: 1px solid #eee;
+}
+
+header .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header .logo {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #5a2c8d;
+    letter-spacing: 1.5px;
+    user-select: none;
+    cursor: default;
+}
+
+header nav ul {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+header nav ul li {
+    margin-left: 28px;
+}
+
+header nav ul li:first-child {
+    margin-left: 0;
+}
+
+header nav ul li a {
+    text-decoration: none;
+    font-weight: 600;
+    color: #33475b;
+    font-size: 1rem;
+    transition: color 0.25s ease, border-bottom-color 0.25s ease;
+    padding: 6px 0;
+    border-bottom: 2px solid transparent;
+    display: inline-block;
+}
+
+header nav ul li a:hover,
+header nav ul li a:focus {
+    color: #5a2c8d;
+    border-bottom-color: #5a2c8d;
+    outline: none;
+}
+
+/* Headings */
+h1, h2, h3, h4 {
+    color: #1a2935;
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
+}
+
+/* Paragraphs and lists */
+p, ol {
+    font-size: 1.05rem;
+    line-height: 1.5;
+    color: #444;
+}
+
+ol {
+    margin-left: 1.5rem;
+}
+
+/* Form styles */
+form {
+    background-color: #fff;
+    padding: 1.5rem 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    max-width: 100%;
+    margin-bottom: 2rem;
+}
+
+/* List group items */
+.list-group-item {
+    font-size: 1.1rem;
+    border: none;
+    margin-bottom: 10px;
+    border-radius: 8px;
+}
+
+.list-group-item em {
+    color: #007bff;
+    font-style: normal;
+    font-weight: 600;
+    display: block;
+    margin-top: 0.25rem;
+}
+
+/* Primary button style */
+.btn-primary {
+    background-color: #5a2c8d;
+    border-color: #5a2c8d;
+    font-weight: 600;
+    font-size: 1.1rem;
+    padding: 0.5rem 1.25rem;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+    background-color: #5a2c8d;
+    border-color: #283593;
+    box-shadow: 0 0 8px rgba(40, 53, 147, 0.6);
+}
+
+/* Container max width and margin */
+.container {
+    max-width: 900px;
+    margin: auto;
+}
+
+/* Activity list container */
+.activity-list {
+    background-color: #fff;
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    max-height: 350px;
+    overflow-y: auto;
+}
+
+.activity-list ul {
+    padding-left: 1.25rem;
+    margin: 0;
+}
+
+.activity-list li {
+    font-size: 1.05rem;
+    margin-bottom: 0.4rem;
+    color: #2c3e50;
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+    header .container {
+        flex-direction: column;
+        gap: 10px;
+    }
+    header nav ul {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    header nav ul li {
+        margin-left: 15px;
+        margin-bottom: 8px;
+    }
+    .row {
+        flex-direction: column;
+    }
+    .col-md-6 {
+        max-width: 100%;
+        flex: 1 0 100%;
+        margin-bottom: 20px;
+    }
+}
+    /* Form styles */
+form {
+    background-color: #fff;
+    padding: 1.5rem 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    max-width: 100%;
+    margin-bottom: 2rem;
+}
+
+label {
+    font-weight: bold;
+    display: block;
+    margin-top: 15px;
+    font-size: 16px;
+}
+
+input {
+    width: 100%;
+    padding: 12px;
+    margin-top: 5px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+}
+
+input:focus {
+    border-color: #4A00E0;  /* Focus border color */
+    outline: none;
+}
+
+textarea {
+    width: 100%;
+    padding: 12px;
+    margin-top: 5px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+    resize: vertical;
+}
+
+textarea:focus {
+    border-color: #4A00E0;  /* Focus border color */
+    outline: none;
+}
+
+select {
+    width: 100%;
+    padding: 12px;
+    margin-top: 5px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+}
+
+select:focus {
+    border-color: #4A00E0;  /* Focus border color */
+    outline: none;
+}
+
+button {
+    background: linear-gradient(to right, #8E2DE2, #4A00E0); /* Purple gradient */
+    color: white;
+    border: none;
+    padding: 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 18px;
+    width: 100%;
+    margin-top: 20px;
+    transition: opacity 0.3s;
+}
+
+button:hover {
+    opacity: 0.9;
+}
+
+button:focus {
+    outline: none;
+}
+
+/* Add styles for form fields inside containers (if necessary) */
+.mb-3 {
+    margin-bottom: 1.25rem;
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px;
+    margin-top: 5px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+}
+
+.form-control:focus {
+    border-color: #4A00E0;
+    outline: none;
+}
+/* Result Styling */
+.result {
+    text-align: center;  /* Centers the text */
+    margin-top: 30px;  /* Adds margin above the result */
+    font-size: 24px;  /* Makes the text larger */
+    color: #2b9348;  /* Green color for the result text to indicate success */
+    font-weight: 700;  /* Makes the text bold */
+    background-color: #e6f9e3;  /* Light green background for the result box */
+    padding: 20px;  /* Adds padding inside the result box */
+    border-radius: 8px;  /* Rounds the corners of the result box */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);  /* Adds a subtle shadow around the result box */
+    width: 80%;  /* Limits the width of the result box */
+    margin-left: auto;  /* Centers the box horizontally */
+    margin-right: auto;  /* Centers the box horizontally */
+    transition: background-color 0.3s ease;  /* Smooth transition for background color on hover */
+}
+
+.result:hover {
+    background-color: #d4f7c7;  /* Changes background color slightly on hover for interactivity */
+}
+
+
+
+
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">Learnlytics</div>
+            <nav>
+                <ul>
+                    <li><a href="{% url 'home' %}">About</a></li>
+                    <li><a href="{% url 'home' %}#layanan">Services</a></li>
+                    <li><a href="{% url 'home' %}#dashboard">Analytics</a></li>
+                    <li><a href="{% url 'about' %}">Our Team</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <h2>Student Grade Prediction</h2>
+
+        <div class="description">
+            Wondering how well you're doing in class? This prediction tool helps you estimate your final grade based on how much time you've spent on activities such as lectures, quizzes, and assignments.
+            <br><br>
+            By filling in your actual or estimated study activities, you'll get an idea of your current performance and identify areas to improve. It’s a quick way to check if you’re on the right track.
+            <br><br>
+            <strong>Why use this?</strong>
+            <ul>
+                <li>See how your study effort contributes to your grades.</li>
+                <li>Identify which areas need more attention (lecture, quiz, assignment).</li>
+                <li>Stay motivated and make smarter learning decisions.</li>
+            </ul>
+            Try entering your data below and see your predicted grade!
+        </div>
+
+        <form method="post">
+            {% csrf_token %}
+            <label for="total_duration">Total Activity Duration (minutes)</label>
+            {{ form.total_duration }}
+            
+            <label for="avg_duration">Average Activity Duration (minutes)</label>
+            {{ form.avg_duration }}
+            
+            <label for="activity_count">Total Activities</label>
+            {{ form.activity_count }}
+            
+            <label for="Lecture">Lecture Duration (minutes)</label>
+            {{ form.Lecture }}
+            
+            <label for="Quiz">Quiz Duration (minutes)</label>
+            {{ form.Quiz }}
+            
+            <label for="Assignment">Assignment Duration (minutes)</label>
+            {{ form.Assignment }}
+            
+            <button type="submit">Predict Grade</button>
+        </form>
+
+        {% if result %}
+            <div class="result">Your predicted grade is: {{ result }}</div>
+            <canvas id="gradeDonut" width="400" height="400"></canvas>
+        {% endif %}
+    </div>
+
+    <!-- Chart.js Library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Donut Chart Script -->
+    {% if result %}
+    <script>
+        const activityContributions = {
+            Lecture: {{ form.cleaned_data.Lecture|default:0 }},
+            Quiz: {{ form.cleaned_data.Quiz|default:0 }},
+            Assignment: {{ form.cleaned_data.Assignment|default:0 }}
+        };
+
+        const ctx = document.getElementById('gradeDonut').getContext('2d');
+
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: Object.keys(activityContributions),
+                datasets: [{
+                    data: Object.values(activityContributions),
+                    backgroundColor: ['#36a2eb', '#ffcd56', '#ff6384'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Activity Contribution to Grade'
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                const value = context.parsed;
+                                const percent = ((value / total) * 100).toFixed(1);
+                                return `${context.label}: ${value} mins (${percent}%)`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+    {% endif %}
+
+    
+</body>
+</html>
